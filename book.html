@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CTF & Security Book</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar styling for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4b5563;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+        /* Hide the default underline on links */
+        a {
+            text-decoration: none;
+        }
+        /* Custom dropdown styles */
+        .custom-dropdown-list {
+            /* Position the list below the button */
+            position: absolute;
+            top: 100%;
+            /* Center the list horizontally relative to its parent */
+            left: 50%;
+            transform: translateX(-50%);
+            
+            /* Add max-height and scrolling */
+            max-height: 12rem; /* Adjusted for approximately 7 visible entries */
+            overflow-y: auto;
+            
+            z-index: 10;
+            display: none;
+            border-radius: 0.5rem;
+            min-width: 100%; /* Ensure the list is at least as wide as the button */
+        }
+        .custom-dropdown.active .custom-dropdown-list {
+            display: block;
+        }
+        /* Tailwind Typography styling for blog content */
+        .prose img {
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col">
+
+    <!-- Header -->
+    <header class="bg-gray-800 shadow-lg sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <!-- Logo/Site Title -->
+            <a href="#" id="home-link" class="flex items-center space-x-2 text-2xl font-bold text-white transition duration-300 ease-in-out hover:text-indigo-400">
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-shield-check text-indigo-500">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    <path d="m9 12 2 2 4-4"/>
+                </svg>
+                <span>CTF Book</span>
+            </a>
+            
+            <!-- Navigation Menu -->
+            <nav class="hidden md:flex space-x-6 text-lg">
+                <a href="#writeups" class="text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium">Writeups</a>
+                <a href="#ctf-events" class="text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium">Upcoming CTFs</a>
+                <a href="#conferences" class="text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium">Conferences</a>
+            </nav>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-gray-300 hover:text-indigo-400 focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-menu">
+                    <line x1="4" x2="20" y1="12" y2="12"></line>
+                    <line x1="4" x2="20" y1="6" y2="6"></line>
+                    <line x1="4" x2="20" y1="18" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Mobile Menu (Hidden by default) -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-800 w-full px-4 pb-4">
+            <nav class="flex flex-col space-y-2 text-lg">
+                <a href="#writeups" class="block py-2 text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium">Writeups</a>
+                <a href="#ctf-events" class="block py-2 text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium">Upcoming CTFs</a>
+                <a href="#conferences" class="block py-2 text-gray-300 hover:text-indigo-400 transition-colors duration-300 font-medium">Conferences</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area - This will be dynamically updated -->
+    <main id="main-content" class="container mx-auto px-4 py-8 flex-grow">
+        <!-- Initial content will be dynamically loaded here by JavaScript -->
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact" class="bg-gray-800 text-gray-400 py-8 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <div class="flex justify-center space-x-6 mb-4">
+                <!-- Social Media Links (replace '#' with your actual links) -->
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300" aria-label="Twitter">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-twitter"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2 1.1-.9 3.5-1.5 4.4-2.5C18.6 4.9 22 4 22 4z"/></svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300" aria-label="Github">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-github"><path d="M15 22v-4a4.8 4.8 0 0 0-1-3.2c3.2-.3 6.6-1.6 6.6-7.1 0-1.6-.6-2.9-1.8-4 1.2-2.3 1.2-4.1 0-5.4-1.2-1.3-3.6-.9-4.8.4-.9-.3-1.8-.4-2.7-.4s-1.8.1-2.7.4c-1.2-1.3-3.6-1.7-4.8-.4-1.2 1.3-1.2 3.1 0 5.4-1.2 1.1-1.8 2.4-1.8 4 0 5.5 3.4 6.8 6.6 7.1a4.8 4.8 0 0 0-1 3.2v4"/></svg>
+                </a>
+                <a href="#" class="text-gray-400 hover:text-white transition-colors duration-300" aria-label="LinkedIn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-linkedin"><path d="M16 8a6 6 0 0 0-6 6v7h-4V14a6 6 0 0 1 6-6h4z"/><rect x="2" y="9" width="4" height="12" rx="2"/><circle cx="4" cy="5" r="2"/></svg>
+                </a>
+            </div>
+            <p>&copy; 2025 CTF Book. All rights reserved.</p>
+            <p class="mt-2">Contact: patidarbhuwan44@gmail.com</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Global variables for app configuration
+        var __app_id = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
+        var __firebase_config = typeof __firebase_config !== 'undefined' ? __firebase_config : '{}';
+        var __initial_auth_token = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : '';
+        
+        // --- BLOG POSTS AND EVENTS DATA TEMPLATE ---
+        const posts = [
+            // --- Writeup Examples ---
+            {
+                id: 'writeup-1',
+                type: 'writeup',
+                title: 'A Detailed Walkthrough of the CTF Challenge',
+                author: 'Jane Doe',
+                date: 'October 27, 2024',
+                tags: ['CTF', 'Web Exploitation', 'Recon', 'Beginner', 'Security'],
+                content: `A deep dive into solving a recent web allenge. We'll cover everything from initial reconnaissance to finding the exploit and gaining a shell. This writeup is suitable for intermediate players <img src=http://secbook.in> </img>.`,
+            },
+            {
+                id: 'writeup-2',
+                type: 'writeup',
+                title: 'Binary Exploitation: Format String Vulnerabilities',
+                author: 'John Smith',
+                date: 'October 25, 2024',
+                tags: ['CTF', 'Binary', 'Pwning', 'Beginner', 'Exploit'],
+                content: `An in-depth look at format string vulnerabilities. Learn how to read from the stack, write to arbitrary memory locations, and achieve code execution.`,
+            },
+            {
+                id: 'writeup-3',
+                type: 'writeup',
+                title: 'Mastering OSINT: Finding Information in the Digital World',
+                author: 'Alex Chen',
+                date: 'September 24, 2024',
+                tags: ['OSINT', 'Reconnaissance', 'Tutorial', 'Threat Intelligence', 'Analysis'],
+                content: 'A comprehensive guide to Open Source Intelligence. We cover tools and techniques for gathering information from public sources, social media, and more.',
+            },
+            {
+                id: 'writeup-4',
+                type: 'writeup',
+                title: 'Reverse Engineering a Simple C++ Binary',
+                author: 'Sarah Lee',
+                date: 'September 23, 2024',
+                tags: ['Reverse Engineering', 'Binary', 'IDA Pro', 'Analysis', 'Exploit'],
+                content: 'A step-by-step tutorial on how to reverse engineer a basic C++ program to find a hidden flag. We use IDA Pro and other standard tools.',
+            },
+            {
+                id: 'writeup-5',
+                type: 'writeup',
+                title: 'Introduction to Cryptography for CTFs',
+                author: 'David Rodriguez',
+                date: 'August 22, 2024',
+                tags: ['Cryptography', 'CTF', 'Beginner', 'Security', 'Tutorial'],
+                content: 'A beginner-friendly guide to common cryptographic challenges in Capture The Flag competitions. We cover classical ciphers, modern encryption, and common attacks.',
+            },
+            {
+                id: 'writeup-6',
+                type: 'writeup',
+                title: 'Web Challenge: SQL Injection Deep Dive',
+                author: 'Emily White',
+                date: 'August 20, 2024',
+                tags: ['Web Exploitation', 'SQLi', 'Database', 'Exploit', 'Intermediate'],
+                content: 'Exploring advanced SQL injection techniques, including time-based and blind injections. We will also discuss prevention and mitigation strategies.',
+            },
+            {
+                id: 'writeup-7',
+                type: 'writeup',
+                title: 'Forensics: Recovering Deleted Files from a Disk Image',
+                author: 'Michael Brown',
+                date: 'July 18, 2024',
+                tags: ['Forensics', 'File Recovery', 'Digital Forensics', 'Analysis', 'Beginner'],
+                content: 'A practical guide on how to analyze a disk image and recover deleted files using tools like `foremost` and `strings`.',
+            },
+            {
+                id: 'writeup-8',
+                type: 'writeup',
+                title: 'Getting Started with Buffer Overflows',
+                author: 'Sophia Zhang',
+                date: 'July 15, 2024',
+                tags: ['Binary', 'Pwning', 'Buffer Overflow', 'Beginner', 'Exploit'],
+                content: 'An entry-level guide to understanding and exploiting simple stack-based buffer overflows to gain control of program execution.',
+            },
+            {
+                id: 'writeup-9',
+                type: 'writeup',
+                title: 'Malware Analysis: A Practical Guide',
+                author: 'Liam Johnson',
+                date: 'June 12, 2024',
+                tags: ['Malware Analysis', 'Reverse Engineering', 'Security', 'Analysis', 'Intermediate'],
+                content: 'This guide introduces fundamental concepts of malware analysis, from static and dynamic analysis to using tools like Ghidra and Wireshark to understand malicious behavior.',
+            },
+            {
+                id: 'writeup-10',
+                type: 'writeup',
+                title: 'Securing Your Cloud Infrastructure on AWS',
+                author: 'Olivia Davis',
+                date: 'January 10, 2025',
+                tags: ['Cloud Security', 'AWS', 'IAM', 'Security', 'Advanced'],
+                content: `
+                    <h2>Introduction to Cloud Security</h2>
+                    <p>
+                        Securing cloud infrastructure is a critical task in modern IT. This article provides a comprehensive overview of best practices for securing your environment, specifically focusing on Amazon Web Services (AWS).
+                    </p>
+                    <p>
+                        We'll cover core topics like Identity and Access Management (IAM), network security, and logging to ensure a strong security posture.
+                    </p>
+                    <img src="https://placehold.co/800x450/111827/ffffff?text=Cloud+Security+Diagram" alt="A diagram illustrating a secure cloud infrastructure." class="rounded-lg shadow-lg my-6">
+                    <h3>IAM Best Practices</h3>
+                    <p>
+                        IAM is the first line of defense. Always follow the principle of least privilege, ensuring users and services have only the permissions they absolutely need. Use multi-factor authentication (MFA) and regularly rotate access keys.
+                    </p>
+                    <h3>Network Security</h3>
+                    <p>
+                        Utilize security groups and network access control lists (ACLs) to control traffic flow. Consider using a virtual private cloud (VPC) and implement segmentation to isolate different parts of your network.
+                    </p>
+                `,
+            },
+            {
+                id: 'writeup-11',
+                type: 'writeup',
+                title: 'Introduction to Threat Hunting',
+                author: 'Ethan Clark',
+                date: 'January 8, 2025',
+                tags: ['Threat Intelligence', 'Security', 'Blue Team', 'Analysis', 'Intermediate'],
+                content: `
+                    <h2>What is Threat Hunting?</h2>
+                    <p>
+                        Threat hunting is a proactive security measure that involves a human analyst searching for malicious activity that has bypassed existing security controls. It differs from traditional security monitoring, which is reactive and based on alerts.
+                    </p>
+                    <p>
+                        In this writeup, we will cover the foundational concepts of threat hunting, including the tools, techniques, and methodologies used to discover hidden threats.
+                    </p>
+                `,
+            },
+            // --- 12 New Writeup Entries ---
+            {
+                id: 'writeup-12',
+                type: 'writeup',
+                title: 'Introduction to Web Assembly Exploitation',
+                author: 'Chloe Evans',
+                date: 'May 30, 2024',
+                tags: ['WebAssembly', 'Web Exploitation', 'Intermediate', 'Exploit'],
+                content: 'A guide to understanding and exploiting vulnerabilities in WebAssembly binaries, a new frontier in web security.',
+            },
+            {
+                id: 'writeup-13',
+                type: 'writeup',
+                title: 'Analyzing Network Traffic with Wireshark',
+                author: 'Mark Green',
+                date: 'April 25, 2024',
+                tags: ['Forensics', 'Network', 'Wireshark', 'Beginner'],
+                content: 'A practical guide on using Wireshark to capture and analyze network traffic for forensic investigations.',
+            },
+            {
+                id: 'writeup-14',
+                type: 'writeup',
+                title: 'Advanced Password Cracking with Hashcat',
+                author: 'Laura Hall',
+                date: 'March 18, 2024',
+                tags: ['Password Cracking', 'Hashcat', 'Offline Attacks', 'Advanced'],
+                content: 'Deep dive into advanced Hashcat features, including custom rules, masks, and using multiple GPUs for speed optimization.',
+            },
+            {
+                id: 'writeup-15',
+                type: 'writeup',
+                title: 'Understanding and Preventing XSS Attacks',
+                author: 'Kevin Brown',
+                date: 'February 10, 2024',
+                tags: ['Web Exploitation', 'XSS', 'Security', 'Prevention'],
+                content: 'An explanation of the different types of XSS vulnerabilities and how developers can protect their applications from them.',
+            },
+            {
+                id: 'writeup-16',
+                type: 'writeup',
+                title: 'Demystifying the TLS Handshake',
+                author: 'Nina Wilson',
+                date: 'January 5, 2024',
+                tags: ['Cryptography', 'Network', 'Security'],
+                content: 'A clear breakdown of the TLS handshake process and what each step means for secure communication.',
+            },
+            {
+                id: 'writeup-17',
+                type: 'writeup',
+                title: 'Exploring Container Security with Docker',
+                author: 'Oscar Taylor',
+                date: 'December 28, 2023',
+                tags: ['Cloud Security', 'Containers', 'Docker', 'Security'],
+                content: 'Best practices for securing Docker containers and the host environment, from image hardening to runtime monitoring.',
+            },
+            {
+                id: 'writeup-18',
+                type: 'writeup',
+                title: 'Memory Forensics with Volatility Framework',
+                author: 'Chloe Harris',
+                date: 'November 15, 2023',
+                tags: ['Forensics', 'Memory Analysis', 'Volatility', 'Advanced'],
+                content: 'A hands-on guide to using the Volatility Framework to extract and analyze data from a memory dump.',
+            },
+            {
+                id: 'writeup-19',
+                type: 'writeup',
+                title: 'Web Application Fuzzing with Burp Suite',
+                author: 'Sam Jones',
+                date: 'October 1, 2023',
+                tags: ['Web Exploitation', 'Fuzzing', 'Burp Suite', 'Intermediate'],
+                content: 'An introduction to using Burp Suite\'s Intruder tool for fuzzing web applications to discover hidden endpoints and vulnerabilities.',
+            },
+            {
+                id: 'writeup-20',
+                type: 'writeup',
+                title: 'Defending Against Phishing Attacks',
+                author: 'Fiona Grant',
+                date: 'September 1, 2023',
+                tags: ['Security', 'Social Engineering', 'Awareness', 'Phishing'],
+                content: 'Tips and strategies for identifying and defending against common phishing attacks in corporate and personal settings.',
+            },
+            {
+                id: 'writeup-21',
+                type: 'writeup',
+                title: 'Exploiting Logic Flaws in Web Applications',
+                author: 'George Harrison',
+                date: 'August 1, 2023',
+                tags: ['Web Exploitation', 'Logic Flaws', 'Bugs', 'Intermediate'],
+                content: 'A look at how subtle logic flaws, rather than technical vulnerabilities, can be exploited to bypass security measures.',
+            },
+            {
+                id: 'writeup-22',
+                type: 'writeup',
+                title: 'A Beginner\'s Guide to Threat Modeling',
+                author: 'Ivy King',
+                date: 'July 1, 2023',
+                tags: ['Security', 'Threat Modeling', 'Beginner', 'Design'],
+                content: 'An introduction to the concept of threat modeling and how it can be used to build more secure systems from the ground up.',
+            },
+            {
+                id: 'writeup-23',
+                type: 'writeup',
+                title: 'Automating Penetration Testing with Python',
+                author: 'Jack Lewis',
+                date: 'June 1, 2023',
+                tags: ['Automation', 'Python', 'Penetration Testing', 'Intermediate'],
+                content: 'Learn how to write simple Python scripts to automate common penetration testing tasks, such as scanning and data parsing.',
+            },
+            
+            // --- Upcoming CTF Examples ---
+            {
+                id: 'ctf-event-1',
+                type: 'ctf',
+                title: 'CTF Challenge: Cyber-A-thon',
+                author: 'CTF Team Alpha',
+                date: 'November 5, 2029',
+                link: '#' // Link to the CTF details page
+            },
+            {
+                id: 'ctf-event-2',
+                type: 'ctf',
+                title: 'Hacker\'s Playground CTF',
+                author: 'GlobalSec Team',
+                date: 'November 12, 2029',
+                link: '#'
+            },
+
+            // --- Security Conference Examples ---
+            {
+                id: 'conf-event-1',
+                type: 'conference',
+                title: 'Annual Cybersecurity Conference 2023',
+                author: 'Conference Organizers',
+                date: 'November 15, 2029',
+                link: '#' // Link to the conference details page
+            },
+            {
+                id: 'conf-event-2',
+                type: 'conference',
+                title: 'Infosec Summit Europe',
+                author: 'CyberGuard Inc.',
+                date: 'December 1, 2029',
+                link: '#'
+            },
+
+            // --- Template for a new post ---
+            // {
+            //     id: 'new-id',
+            //     type: 'writeup', // or 'ctf' or 'conference'
+            //     title: 'Title of your new post/event',
+            //     author: 'Author Name',
+            //     date: 'Month Day, Year',
+            //     tags: ['tag1', 'tag2', 'tag3'], // Optional for CTF/Conference
+            //     content: `Brief description for writeups.`, // Optional for CTF/Conference
+            //     link: '#' // The URL to the full article or event page
+            // }
+        ];
+
+        // --- DOM Elements ---
+        const postsPerPage = 6;
+        let currentPage = 1;
+        const mainContent = document.getElementById('main-content');
+        const homeLink = document.getElementById('home-link');
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        // --- Blog Page & Home Page Rendering Functions ---
+        
+        /**
+         * Renders the home page content with writeups, CTFs, and conferences.
+         */
+        function renderHomePage() {
+            mainContent.innerHTML = `
+                <!-- Hero Section -->
+                <section class="text-center py-16">
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white mb-4">
+                        Your Security Domain Book
+                    </h1>
+                    <p class="text-xl sm:text-2xl text-gray-400 max-w-3xl mx-auto">
+                        All CTF writeups, security updates, and upcoming events in one place. Stay ahead of the curve.
+                    </p>
+                </section>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Writeups Section -->
+                    <section id="writeups" class="md:col-span-2 space-y-8">
+                        <div class="flex items-center justify-between flex-wrap gap-4">
+                            <h2 class="text-3xl font-bold text-white border-b-2 border-indigo-500 pb-2">Writeups & Updates</h2>
+                            <!-- Custom Dropdown Menu -->
+                            <div id="month-year-dropdown" class="custom-dropdown relative sm:w-auto">
+                                <div role="button" aria-expanded="false" aria-controls="month-year-list" class="flex justify-between items-center bg-gray-800 text-white p-2 rounded-lg border border-gray-700 cursor-pointer focus:outline-none focus:border-indigo-500 transition-colors duration-200">
+                                    <span id="dropdown-selected-value" class="mr-2">All Dates</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 transition-transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </div>
+                                <ul id="month-year-list" class="custom-dropdown-list bg-gray-800 p-2 border border-gray-700" role="listbox">
+                                    <!-- Options will be populated by JavaScript -->
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="writeups-container" class="space-y-6">
+                            <!-- Writeups will be dynamically injected here by JavaScript -->
+                        </div>
+                        <!-- Pagination Controls -->
+                        <div id="pagination-container" class="flex justify-center items-center space-x-2 mt-8">
+                            <!-- Pagination buttons will be dynamically injected here -->
+                        </div>
+                    </section>
+                    <!-- Sidebar with Upcoming CTFs and Conferences -->
+                    <div class="md:col-span-1 space-y-8">
+                        <!-- Upcoming CTFs Section -->
+                        <section id="ctf-events" class="space-y-6">
+                            <h2 class="text-3xl font-bold text-white border-b-2 border-indigo-500 pb-2">Upcoming CTFs</h2>
+                            <ul id="ctfs-container" class="space-y-4">
+                                <!-- Upcoming CTFs will be dynamically injected here by JavaScript -->
+                            </ul>
+                        </section>
+                        <!-- Security Conferences Section -->
+                        <section id="conferences" class="space-y-6">
+                            <h2 class="text-3xl font-bold text-white border-b-2 border-indigo-500 pb-2">Security Conferences</h2>
+                            <ul id="conferences-container" class="space-y-4">
+                                <!-- Security Conferences will be dynamically injected here by JavaScript -->
+                            </ul>
+                        </section>
+                    </div>
+                </div>
+            `;
+            // Re-initialize event listeners and content after rendering the homepage
+            setupHomepageListeners();
+            renderAllContent();
+        }
+
+        /**
+         * Renders a single blog post on the page.
+         * @param {string} postId The ID of the post to display.
+         */
+        function renderSinglePost(postId) {
+            const post = posts.find(p => p.id === postId);
+
+            if (!post) {
+                mainContent.innerHTML = `<div class="text-center py-16"><h1 class="text-4xl text-white">Post not found!</h1></div>`;
+                return;
+            }
+
+            const pageHtml = `
+                <article class="max-w-4xl mx-auto p-8 rounded-xl shadow-lg bg-gray-800">
+                    <button id="back-button" class="flex items-center space-x-2 text-indigo-400 hover:text-indigo-300 mb-6 transition-colors duration-200">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-left"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                        <span>Back to Home</span>
+                    </button>
+                    <h1 class="text-4xl sm:text-5xl font-extrabold text-white mb-2">${post.title}</h1>
+                    <p class="text-gray-400 text-lg mb-4">By ${post.author} on ${post.date}</p>
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        ${post.tags.map(tag => `<span class="bg-gray-700 text-gray-300 text-sm font-semibold px-3 py-1 rounded-full">${tag}</span>`).join('')}
+                    </div>
+                    <div id="post-content-container" class="prose prose-lg prose-invert text-gray-300"></div>
+                </article>
+            `;
+
+            // Clear existing content and append the new article
+            mainContent.innerHTML = pageHtml;
+            
+            // This line now uses innerHTML to render HTML content
+            document.getElementById('post-content-container').innerHTML = post.content;
+            
+            // Add event listener for the "Back" button after the new content is in the DOM
+            document.getElementById('back-button').addEventListener('click', () => {
+                renderHomePage();
+            });
+        }
+        
+        /**
+         * Truncates a string to a specified length and adds an ellipsis.
+         * @param {string} text The string to truncate.
+         * @param {number} maxLength The maximum length of the string.
+         * @returns {string} The truncated string.
+         */
+        function getTeaser(text, maxLength = 200) {
+            // Reverted back to a simple truncation without stripping HTML tags, for the preview on the home page.
+            if (text.length <= maxLength) {
+                return text;
+            }
+            return text.substring(0, maxLength) + '...';
+        }
+
+        // --- Event Listeners and Initial Setup ---
+        
+        /**
+         * Attaches event listeners for the homepage elements after they've been rendered.
+         */
+        function setupHomepageListeners() {
+            // Find the dynamically created elements
+            const writeupsContainer = document.getElementById('writeups-container');
+            const paginationContainer = document.getElementById('pagination-container');
+            const customDropdown = document.getElementById('month-year-dropdown');
+            const dropdownSelectedValue = document.getElementById('dropdown-selected-value');
+            const dropdownList = document.getElementById('month-year-list');
+
+            // Re-attach event listeners for the dropdown
+            const dropdownButton = customDropdown.querySelector('[role="button"]');
+            const dropdownArrow = dropdownButton.querySelector('svg');
+            dropdownButton.addEventListener('click', (event) => {
+                customDropdown.classList.toggle('active');
+                const isExpanded = customDropdown.classList.contains('active');
+                dropdownButton.setAttribute('aria-expanded', isExpanded);
+                if (isExpanded) {
+                    dropdownArrow.style.transform = 'rotate(180deg)';
+                } else {
+                    dropdownArrow.style.transform = 'rotate(0deg)';
+                }
+                event.stopPropagation();
+            });
+            dropdownList.addEventListener('click', (e) => {
+                const selectedOption = e.target.closest('li');
+                if (selectedOption) {
+                    const selectedValue = selectedOption.dataset.value;
+                    const selectedText = selectedOption.textContent;
+                    dropdownSelectedValue.textContent = selectedText;
+                    dropdownSelectedValue.dataset.value = selectedValue;
+                    customDropdown.classList.remove('active');
+                    dropdownButton.setAttribute('aria-expanded', 'false');
+                    dropdownArrow.style.transform = 'rotate(0deg)';
+                    renderWriteups(1, selectedValue);
+                }
+            });
+            document.addEventListener('click', (e) => {
+                if (!customDropdown.contains(e.target)) {
+                    customDropdown.classList.remove('active');
+                    dropdownButton.setAttribute('aria-expanded', 'false');
+                    dropdownArrow.style.transform = 'rotate(0deg)';
+                }
+            });
+            
+            // Attach event listener to the writeup container for delegation
+            writeupsContainer.addEventListener('click', (event) => {
+                const articleLink = event.target.closest('.writeup-link');
+                if (articleLink) {
+                    event.preventDefault(); // Prevent default link behavior
+                    const postId = articleLink.dataset.postId;
+                    renderSinglePost(postId);
+                }
+            });
+        }
+
+        // --- Core Rendering Functions ---
+
+        /**
+         * Renders the writeup articles for the specified page and filter.
+         * @param {number} page The page number to display.
+         * @param {string} filterMonthYear The month and year to filter by (e.g., "JAN 2025").
+         */
+        function renderWriteups(page, filterMonthYear = 'All') {
+            currentPage = page;
+            const writeupsContainer = document.getElementById('writeups-container');
+            writeupsContainer.innerHTML = '';
+            
+            let writeups = posts.filter(post => post.type === 'writeup');
+            
+            if (filterMonthYear !== 'All') {
+                writeups = writeups.filter(post => {
+                    const dateParts = post.date.split(' ');
+                    const month = dateParts[0].substring(0, 3).toUpperCase();
+                    const year = dateParts[2];
+                    const postMonthYear = `${month} ${year}`;
+                    return postMonthYear === filterMonthYear;
+                });
+            }
+            
+            const startIndex = (page - 1) * postsPerPage;
+            const endIndex = startIndex + postsPerPage;
+            const paginatedWriteups = writeups.slice(startIndex, endIndex);
+
+            paginatedWriteups.forEach(post => {
+                const article = document.createElement('a');
+                article.href = "#"; // Using '#' to prevent navigation, as rendering is now dynamic
+                article.dataset.postId = post.id;
+                article.className = 'writeup-link block bg-gray-800 p-6 rounded-lg shadow-md transition-transform transform hover:scale-[1.01] hover:shadow-xl';
+                article.innerHTML = `
+                    <div class="flex items-center space-x-4 mb-4">
+                        <span class="bg-indigo-500 text-white text-xs font-bold px-3 py-1 rounded-full">Writeup</span>
+                        <h3 class="text-2xl font-bold text-indigo-400">${post.title}</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm mb-4">By ${post.author} on ${post.date}</p>
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        ${post.tags.map(tag => `<span class="bg-gray-700 text-gray-300 text-xs font-semibold px-2 py-1 rounded-full">${tag}</span>`).join('')}
+                    </div>
+                    <!-- Display only a teaser of the content on the home page -->
+                    <p class="text-gray-300">${getTeaser(post.content)}</p>
+                `;
+                writeupsContainer.appendChild(article);
+            });
+            renderPagination(writeups);
+        }
+
+        /**
+         * Renders the pagination controls below the writeups section.
+         * @param {Array} filteredWriteups The array of writeups currently being displayed.
+         */
+        function renderPagination(filteredWriteups) {
+            const paginationContainer = document.getElementById('pagination-container');
+            paginationContainer.innerHTML = '';
+            const totalPages = Math.ceil(filteredWriteups.length / postsPerPage);
+
+            if (totalPages > 1) {
+                for (let i = 1; i <= totalPages; i++) {
+                    const button = document.createElement('button');
+                    button.textContent = i;
+                    button.className = `px-4 py-2 rounded-lg font-bold transition-colors duration-200`;
+                    
+                    if (i === currentPage) {
+                        button.classList.add('bg-indigo-500', 'text-white');
+                    } else {
+                        button.classList.add('bg-gray-700', 'text-gray-300', 'hover:bg-indigo-400', 'hover:text-white');
+                    }
+
+                    button.addEventListener('click', () => {
+                        const dropdownSelectedValue = document.getElementById('dropdown-selected-value');
+                        renderWriteups(i, dropdownSelectedValue.dataset.value);
+                    });
+                    paginationContainer.appendChild(button);
+                }
+            }
+        }
+
+        /**
+         * Populates the custom dropdown with unique month/year values.
+         */
+        function populateDropdown() {
+            const writeups = posts.filter(post => post.type === 'writeup');
+            const uniqueDates = [...new Set(writeups.map(post => {
+                const dateParts = post.date.split(' ');
+                const month = dateParts[0].substring(0, 3).toUpperCase();
+                const year = dateParts[2];
+                return `${month} ${year}`;
+            }))];
+            
+            uniqueDates.sort((a, b) => {
+                const dateA = new Date(a.replace(' ', ' 1, '));
+                const dateB = new Date(b.replace(' ', ' 1, '));
+                return dateB - dateA;
+            });
+            
+            const dropdownList = document.getElementById('month-year-list');
+            if (dropdownList) {
+                dropdownList.innerHTML = '';
+                
+                const allDatesOption = document.createElement('li');
+                allDatesOption.textContent = 'All Dates';
+                allDatesOption.dataset.value = 'All';
+                allDatesOption.className = 'px-4 py-2 hover:bg-gray-700 cursor-pointer transition-colors duration-200 rounded-md whitespace-nowrap';
+                dropdownList.appendChild(allDatesOption);
+                
+                uniqueDates.forEach(date => {
+                    const option = document.createElement('li');
+                    option.textContent = date;
+                    option.dataset.value = date;
+                    option.className = 'px-4 py-2 hover:bg-gray-700 cursor-pointer transition-colors duration-200 rounded-md whitespace-nowrap';
+                    dropdownList.appendChild(option);
+                });
+            }
+        }
+
+        /**
+         * Renders the content for the sidebar sections (CTFs and Conferences).
+         */
+        function renderSidebarContent() {
+            const ctfsContainer = document.getElementById('ctfs-container');
+            const conferencesContainer = document.getElementById('conferences-container');
+            if (ctfsContainer && conferencesContainer) {
+                ctfsContainer.innerHTML = '';
+                conferencesContainer.innerHTML = '';
+
+                posts.filter(post => post.type === 'ctf').forEach(post => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'bg-gray-800 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow';
+                    listItem.innerHTML = `
+                        <a href="${post.link}" class="flex items-start space-x-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-swords text-yellow-400 mt-1">
+                                <path d="M14.5 17.5 12 15l-1.5 1.5 2 2 1.5-1.5z"/><path d="M2.5 14.5 5 12l1.5 1.5-2 2-1.5-1.5z"/><path d="M12 2l-1.5 1.5 2 2 1.5-1.5L12 2z"/><path d="M15.5 12.5 18 15l1.5-1.5-2-2-1.5 1.5z"/><path d="M9.5 9.5 12 12l1.5-1.5-2-2-1.5 1.5z"/><path d="M12 15l-1.5-1.5-2-2-1.5 1.5L2.5 14.5z"/><path d="M18 15l1.5 1.5-2 2-1.5-1.5z"/><path d="M5 12l-1.5-1.5-2-2-1.5 1.5L2.5 14.5z"/>
+                            </svg>
+                            <div>
+                                <span class="block text-xl font-bold text-yellow-400">${post.title}</span>
+                                <p class="text-gray-300 text-sm mt-1">Date: ${post.date}</p>
+                            </div>
+                        </a>
+                    `;
+                    ctfsContainer.appendChild(listItem);
+                });
+
+                posts.filter(post => post.type === 'conference').forEach(post => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'bg-gray-800 p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow';
+                    listItem.innerHTML = `
+                        <a href="${post.link}" class="flex items-start space-x-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-calendar text-emerald-400 mt-1">
+                                <path d="M8 2v4"/><path d="M16 2v4"/><rect x="2" y="4" width="20" height="18" rx="2"/><path d="M3 10h18"/>
+                            </svg>
+                            <div>
+                                <span class="block text-xl font-bold text-emerald-400">${post.title}</span>
+                                <p class="text-gray-300 text-sm mt-1">Date: ${post.date}</p>
+                            </div>
+                        </a>
+                    `;
+                    conferencesContainer.appendChild(listItem);
+                });
+            }
+        }
+        
+        // --- Main Event Handlers and Initialization ---
+        
+        /**
+         * Renders all dynamic content for the page, including writeups, sidebar, and dropdown.
+         */
+        function renderAllContent() {
+            populateDropdown();
+            renderWriteups(1, 'All');
+            renderSidebarContent();
+        }
+        
+        // --- Mobile Menu Toggle ---
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // --- Initial Page Load Logic ---
+        document.addEventListener('DOMContentLoaded', () => {
+            renderHomePage();
+        });
+        
+        // Handle home link click
+        homeLink.addEventListener('click', (event) => {
+            event.preventDefault();
+            renderHomePage();
+        });
+    </script>
+</body>
+</html>
