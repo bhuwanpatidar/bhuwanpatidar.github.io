@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSFuck Deobfuscator</title>
+    <!-- Use Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+
+        /* Custom scrollbar for textareas */
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        textarea::-webkit-scrollbar-track {
+            background: #e5e7eb;
+            border-radius: 4px;
+        }
+
+        textarea::-webkit-scrollbar-thumb {
+            background: #9ca3af;
+            border-radius: 4px;
+        }
+
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #6b7280;
+        }
+    </style>
+</head>
+
+<body class="p-6 md:p-10 flex items-center justify-center min-h-screen">
+    <div class="w-full max-w-4xl bg-white p-8 rounded-2xl shadow-xl border border-gray-200">
+        <h1 class="text-4xl font-bold text-center mb-2 text-gray-800">JSFuck Deobfuscator</h1>
+        <p class="text-center text-lg text-gray-600 mb-8">Paste your obfuscated code below to reveal the original source.</p>
+        
+        <!-- Warning about using eval() on untrusted code -->
+        <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-6 rounded-md" role="alert">
+            <p class="font-bold">Caution:</p>
+            <p>This tool uses `eval()` to deobfuscate the code. Only use it on code you trust, as executing malicious code can be harmful.</p>
+        </div>
+
+        <!-- Input Textarea -->
+        <div class="mb-6">
+            <label for="inputCode" class="block text-gray-700 text-sm font-semibold mb-2">Obfuscated Code</label>
+            <textarea id="inputCode" rows="10" class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 resize-none text-sm bg-gray-50 placeholder-gray-400" placeholder="Paste your JSFuck code here..."></textarea>
+        </div>
+
+        <!-- Deobfuscate Button -->
+        <button id="deobfuscateBtn" class="w-full bg-blue-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-200 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            Deobfuscate
+        </button>
+
+        <!-- Output Textarea -->
+        <div class="mt-8">
+            <label for="outputCode" class="block text-gray-700 text-sm font-semibold mb-2">Deobfuscated Code</label>
+            <textarea id="outputCode" rows="10" class="w-full p-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 transition-all duration-200 resize-none text-sm bg-gray-50 text-gray-800" readonly placeholder="The deobfuscated code will appear here."></textarea>
+        </div>
+    </div>
+
+    <script>
+        const inputCode = document.getElementById('inputCode');
+        const outputCode = document.getElementById('outputCode');
+        const deobfuscateBtn = document.getElementById('deobfuscateBtn');
+
+        deobfuscateBtn.addEventListener('click', () => {
+            const code = inputCode.value.trim();
+
+            if (code === '') {
+                outputCode.value = "Please enter some code to deobfuscate.";
+                return;
+            }
+
+            try {
+                // The deobfuscation is performed by a simple, but risky, `eval()` call.
+                // The JSFuck code itself constructs and returns a string or a function.
+                // We use toString() to get the code's body if it's a function.
+                let result = eval(code);
+                
+                // If the result is a function, we convert it to a string to see the code.
+                if (typeof result === 'function') {
+                    // Check if the function is anonymous
+                    if (result.name === '') {
+                        result = result.toString();
+                    } else {
+                        // If it's a named function, just use its name
+                        result = result.toString();
+                    }
+                }
+
+                outputCode.value = result;
+            } catch (e) {
+                // Handle any errors that occur during execution
+                outputCode.value = "Deobfuscation failed. Error: " + e.message;
+            }
+        });
+    </script>
+</body>
+
+</html>
