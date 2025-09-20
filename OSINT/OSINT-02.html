@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Assignment #002: Classified</title>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha256/0.9.0/sha256.min.js"></script>
+  <style>
+    body {
+      font-family: 'Share Tech Mono', monospace;
+      background-color: #0d0d0d;
+      background-image: radial-gradient(circle at top, #1a1a1a 0%, #0d0d0d 100%);
+      color: #e2e8f0;
+    }
+    .glitch {
+      position: relative;
+      font-weight: bold;
+      animation: glitch 1s infinite;
+    }
+    @keyframes glitch {
+      0% { text-shadow: 2px 0 red, -2px 0 cyan; }
+      20% { text-shadow: -2px 0 red, 2px 0 cyan; }
+      40% { text-shadow: 2px 0 red, -2px 0 cyan; }
+      60% { text-shadow: -2px 0 red, 2px 0 cyan; }
+      100% { text-shadow: 2px 0 red, -2px 0 cyan; }
+    }
+    .typing {
+      white-space: nowrap;
+      overflow: hidden;
+      animation: typing 2s steps(30, end);
+    }
+    @keyframes typing { from { width: 0 } to { width: 100% } }
+    .hidden-challenge { display: none; opacity: 0; transform: translateY(20px); transition: all 1s ease-in; }
+    .challenge-visible { display: block; opacity: 1; transform: translateY(0); }
+    #chat-messages::-webkit-scrollbar { width: 6px; }
+    #chat-messages::-webkit-scrollbar-thumb { background: #22c55e; border-radius: 10px; }
+  </style>
+</head>
+<body class="antialiased">
+ 
+    <h2 class="text-center glitch text-5xl md:text-6xl tracking-widest">OSINT CHALLENGE</h2>
+    
+
+
+  <div class="container mx-auto px-4 py-6 lg:py-10 grid lg:grid-cols-2 gap-6">
+    <!-- Chat -->
+    <div id="chat-container" class="bg-black/80 border border-green-500 rounded-lg shadow-xl p-6 flex flex-col justify-end overflow-hidden">
+      <div id="chat-messages" class="space-y-6 overflow-y-auto pr-2 font-mono text-sm leading-snug h-[78vh]"></div>
+    </div>
+
+    <!-- Challenge -->
+    <div id="challenge-container" class="bg-black/80 border border-gray-600 rounded-lg shadow-xl p-6 flex flex-col hidden-challenge">
+      <div class="flex-grow space-y-8">
+        <!-- Header -->
+        <div class="text-center">
+          <h1 class=" text-3xl md:text-4xl">MISSION-02</h1>
+          <div class="h-1 bg-green-500 w-20 mx-auto mt-3 rounded-full animate-pulse"></div>
+        </div>
+
+        <!-- Description -->
+        <div class="text-gray-300 text-sm md:text-base leading-relaxed">
+          <p>It has come to our attention that a team member may have been providing assistance to militants linked to a recent bombing threat. We are launching an immediate, confidential investigation. IMB-247 is assigned to lead the inquiry. <br> <label for="" class="block text-sm font-semibold text-green-400">Flag Format : AgentName</label></p>
+         
+        </div>
+
+        <!-- Challenge File -->
+        <div class="flex justify-center p-4 bg-gray-900 rounded-lg border-2 border-green-600 border-dashed">
+          <div class="w-full h-auto max-w-sm rounded-lg cursor-pointer transform " >aHR0cHM6Ly9wYXN0ZWJpbi5jb20vNXpYUmFzaGM= </div>
+         
+        </div>
+
+      
+
+        <!-- Input -->
+        <div class="space-y-3">
+          <label for="city_name" class="block text-sm font-semibold text-green-400">Flag:</label>
+          <input type="text" id="city_name" class="w-full px-4 py-3 bg-black text-green-400 border border-green-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Agent name" autocomplete="off">
+          <button id="submit-button" class="w-full px-6 py-3 text-lg font-bold text-black bg-green-500 rounded-lg shadow-lg transform hover:scale-105 hover:bg-green-400 transition duration-300">CONFIRM</button>
+        </div>
+      </div>
+
+      <!-- Message -->
+      <div id="message-box" class="message-box p-4 rounded-lg text-center mt-6">
+        <p id="message-text" class="font-semibold"></p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const correctHash = 'ac6fd1e618ae39b4148ed534ecbf735d5a1185512b8923ede325a2171c0ac388'; // hash of "london"
+    const chatMessages = document.getElementById('chat-messages');
+    const challengeContainer = document.getElementById('challenge-container');
+    const messageBox = document.getElementById('message-box');
+    const messageText = document.getElementById('message-text');
+    const inputField = document.getElementById('city_name');
+    const submitButton = document.getElementById('submit-button');
+
+    const chatScript = [
+      { sender: 'COMMANDER', text: 'You have done great job in your previous task.' },
+      { sender: 'COMMANDER', text: "This days our plans and tasks are getting compromised." },
+      { sender: 'OPERATIVE', text: 'Do you have any clues or information.' },
+      { sender: 'COMMANDER', text: 'We got message from one of our Spy. ' },
+      { sender: 'COMMANDER', text: 'This will lead you to Agent name who is behind this.' },
+      { sender: 'OPERATIVE', text: 'Got it' },
+      { sender: 'COMMANDER', text: 'Closing Secure Channel.......' }
+    ];
+
+    async function addChatMessage(sender, text, delay = 2500) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          const messageDiv = document.createElement('div');
+          messageDiv.className = 'flex items-center max-w-[85%] space-x-3';
+
+          const avatar = document.createElement('img');
+          avatar.className = 'w-10 h-10 rounded-full object-cover';
+
+          if (sender === 'COMMANDER') {
+            avatar.src = 'https://upload.wikimedia.org/wikipedia/en/c/c8/Samuel_L._Jackson_as_Nick_Fury_in_The_Avengers_%282012_film%29.jpg';
+          } else {
+            avatar.src = 'https://images4.alphacoders.com/194/194934.jpg';
+          }
+
+          const contentDiv = document.createElement('div');
+          contentDiv.className = 'bg-gray-900 border border-green-500 rounded-xl p-3';
+
+          const senderSpan = document.createElement('span');
+          senderSpan.className = 'block mb-1 text-xs';
+          senderSpan.textContent = sender;
+
+          const textP = document.createElement('p');
+          textP.className = 'text-sm text-gray-200 typing';
+          textP.textContent = text;
+
+          contentDiv.appendChild(senderSpan);
+          contentDiv.appendChild(textP);
+
+          if (sender === 'COMMANDER') {
+            messageDiv.classList.add('self-start', 'flex-row');
+            senderSpan.classList.add('text-green-400');
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(contentDiv);
+          } else {
+            messageDiv.classList.add('self-end', 'flex-row-reverse');
+            contentDiv.classList.add('border-blue-500');
+            senderSpan.classList.add('text-blue-400');
+            textP.classList.add('text-blue-200');
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(contentDiv);
+          }
+
+          chatMessages.appendChild(messageDiv);
+          chatMessages.scrollTop = chatMessages.scrollHeight;
+          resolve();
+        }, delay);
+      });
+    }
+
+    async function startChatSequence() {
+      chatMessages.innerHTML = '';
+      for (const message of chatScript) {
+        await addChatMessage(message.sender, message.text);
+      }
+      challengeContainer.classList.add('challenge-visible');
+    }
+
+    function downloadImage() {
+      document.getElementById('download-link').click();
+      showMessage("File downloaded. Inspect metadata for the clue.", "success");
+    }
+
+    function showMessage(text, type) {
+      messageText.textContent = text;
+      messageBox.className = 'p-4 rounded-lg text-center mt-6';
+      if (type === 'success') {
+        messageBox.classList.add('bg-green-500', 'text-white');
+      } else {
+        messageBox.classList.add('bg-red-500', 'text-white');
+      }
+      setTimeout(() => { messageText.textContent = ''; }, 5000);
+    }
+
+    submitButton.addEventListener('click', () => {
+      const userAnswer = inputField.value.trim().toLowerCase();
+      const hashedAnswer = sha256(userAnswer);
+      if (hashedAnswer === correctHash) {
+        showMessage("Success. Agent Found.", "success");
+        submitButton.disabled = true;
+        inputField.disabled = true;
+      } else {
+        showMessage("Incorrect. Try again.", "error");
+      }
+    });
+
+    window.onload = startChatSequence;
+  </script>
+</body>
+</html>
