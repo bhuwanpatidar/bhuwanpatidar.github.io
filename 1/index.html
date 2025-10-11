@@ -3,401 +3,319 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>B-Sides // Indore // Cyber-Security Summit</title>
+    <title>Bsides Indore | DATA HACK</title>
     <style>
-        /* --- GLOBAL RESET & TYPOGRAPHY --- */
-        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap');
-        
+        /* CSS STYLES */
         :root {
-            --neon-blue: #00FFFF;
-            --neon-pink: #FF00FF;
-            --dark-bg: #0A0A0A;
-            --mid-gray: #1A1A1A;
-            --font-main: 'Space Mono', monospace;
-            --glitch-speed: 0.8s;
+            /* Cyberpunk Color Palette */
+            --cyber-pink: #ff0099;
+            --cyber-purple: #9900ff;
+            --dark-bg: #11001a;
+            --text-color: #f0f0f0;
+            --neon-glow: 0 0 5px var(--cyber-pink), 0 0 15px var(--cyber-purple), 0 0 30px rgba(255, 0, 153, 0.4);
+            --border-glow: 0 0 3px var(--cyber-pink);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            text-decoration: none;
-            color: var(--neon-blue);
         }
 
-        body {
-            font-family: var(--font-main);
+        body, html {
+            height: 100%;
+            font-family: 'Space Mono', monospace;
             background-color: var(--dark-bg);
-            overflow-x: hidden;
-            min-height: 100vh;
-            position: relative;
+            color: var(--text-color);
+            overflow: hidden; /* Keep background static */
         }
-        
-        /* --- CODE RAIN ANIMATION (BACKGROUND) --- */
-        #code-rain-canvas {
+
+        /* 1. Header/Navigation */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: rgba(17, 0, 26, 0.8); /* Semi-transparent background */
+            border-bottom: 2px solid var(--cyber-purple);
+            box-shadow: var(--border-glow);
+            z-index: 10;
+        }
+
+        .nav-link {
+            text-transform: uppercase;
+            text-decoration: none;
+            color: var(--text-color);
+            margin: 0 20px;
+            font-size: 1em;
+            letter-spacing: 2px;
+            padding: 5px 10px;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+
+        .nav-link:hover {
+            color: var(--cyber-pink);
+            border: 1px dashed var(--cyber-pink);
+            text-shadow: 0 0 5px var(--cyber-pink);
+            transform: translateY(-2px);
+        }
+
+        /* 2. Particles Canvas (Background) */
+        #particle-canvas {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -1;
-            opacity: 0.1; /* Subtly visible */
-        }
-        
-        /* --- HEADER & NAVIGATION --- */
-        header {
-            background-color: var(--mid-gray);
-            border-bottom: 2px solid var(--neon-pink);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 0 20px var(--neon-pink);
+            z-index: 1;
         }
 
-        .logo {
-            font-size: 1.8em;
-            font-weight: 700;
-            letter-spacing: 2px;
-            color: var(--neon-pink);
-            text-shadow: 0 0 10px var(--neon-pink), 0 0 20px var(--neon-pink);
-        }
-
-        nav a {
-            margin-left: 25px;
-            padding: 5px 10px;
-            text-transform: uppercase;
-            font-size: 0.9em;
-            border: 1px solid transparent;
-            transition: all 0.3s ease-in-out;
-        }
-
-        nav a:hover {
-            color: var(--neon-pink);
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 5px var(--neon-blue), 0 0 15px var(--neon-blue) inset;
-        }
-
-        /* --- GLITCH EFFECT (GLITCH TEXT CLASS) --- */
-        .glitch-text {
-            font-size: 4em;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 5px;
+        /* 3. Main Content */
+        .landing-container {
             position: relative;
-            text-shadow: 0 0 5px var(--neon-blue);
-            animation: text-flicker 3s infinite alternate linear;
-        }
-
-        .glitch-text::before,
-        .glitch-text::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--dark-bg);
-            clip-path: inset(0 0 100% 0);
-        }
-
-        .glitch-text::before {
-            color: var(--neon-pink);
-            z-index: -1;
-            animation: glitch-anim-1 var(--glitch-speed) infinite linear alternate-reverse;
-        }
-
-        .glitch-text::after {
-            color: var(--neon-blue);
-            z-index: -2;
-            animation: glitch-anim-2 var(--glitch-speed) infinite linear alternate;
-        }
-        
-        @keyframes glitch-anim-1 {
-            0% { clip-path: inset(10% 0 90% 0); transform: translate(-5px, 0); }
-            20% { clip-path: inset(80% 0 10% 0); transform: translate(5px, 0); }
-            40% { clip-path: inset(10% 0 90% 0); transform: translate(-5px, 0); }
-            60% { clip-path: inset(50% 0 40% 0); transform: translate(5px, 0); }
-            80% { clip-path: inset(20% 0 70% 0); transform: translate(-5px, 0); }
-            100% { clip-path: inset(70% 0 20% 0); transform: translate(0, 0); }
-        }
-
-        @keyframes glitch-anim-2 {
-            0% { clip-path: inset(30% 0 60% 0); transform: translate(5px, 0); }
-            30% { clip-path: inset(90% 0 0% 0); transform: translate(-5px, 0); }
-            60% { clip-path: inset(10% 0 80% 0); transform: translate(5px, 0); }
-            100% { clip-path: inset(50% 0 40% 0); transform: translate(-5px, 0); }
-        }
-        
-        @keyframes text-flicker {
-            0% { opacity: 1; }
-            5% { opacity: 0.8; text-shadow: 0 0 5px var(--neon-pink); }
-            10% { opacity: 1; }
-            20% { opacity: 0.9; text-shadow: 0 0 5px var(--neon-blue); }
-            25% { opacity: 1; }
-            100% { opacity: 1; }
-        }
-        
-        /* --- MAIN SECTION LAYOUT --- */
-        main {
-            padding: 50px 5%;
-            display: grid;
-            gap: 40px;
-        }
-
-        .hero-section {
+            z-index: 2;
             display: flex;
             flex-direction: column;
+            justify-content: center;
             align-items: center;
+            height: 100vh;
             text-align: center;
-            padding: 50px 0;
+            padding: 20px;
         }
 
-        .hero-date {
-            font-size: 1.5em;
-            color: var(--neon-pink);
-            margin-top: 10px;
+        /* Glitch Effect on Logo */
+        .logo {
+            font-size: 5em;
+            font-weight: bold;
+            letter-spacing: 7px;
+            text-transform: uppercase;
+            margin-bottom: 0.1em;
+            color: var(--cyber-pink);
+            text-shadow: var(--neon-glow);
+            position: relative;
+            animation: flicker 2s infinite alternate;
         }
 
+        .subtitle {
+            font-size: 1.6em;
+            color: var(--cyber-purple);
+            margin-bottom: 2em;
+            text-shadow: 0 0 5px var(--cyber-purple);
+            letter-spacing: 3px;
+            font-weight: 700;
+        }
+
+        /* Status Block - Terminal Style */
+        .status-block {
+            background: rgba(255, 0, 153, 0.1); /* Pink transparency */
+            border: 2px solid var(--cyber-purple);
+            padding: 20px 40px;
+            margin-bottom: 40px;
+            border-radius: 5px;
+            box-shadow: var(--neon-glow);
+            transition: all 0.5s ease;
+            width: fit-content;
+            cursor: default;
+        }
+
+        .status-block:hover {
+            border-color: var(--cyber-pink);
+            box-shadow: 0 0 10px var(--cyber-pink);
+        }
+
+        .date-text {
+            font-size: 1.3em;
+            margin-bottom: 5px;
+            color: var(--text-color);
+        }
+
+        .status-text {
+            font-size: 2.2em;
+            font-weight: bold;
+            color: var(--cyber-pink);
+            text-shadow: 0 0 5px var(--cyber-pink);
+        }
+
+        /* Call to Action Button - Hacked/Data Style */
         .cta-button {
             display: inline-block;
-            padding: 15px 30px;
-            margin-top: 30px;
-            background: none;
-            border: 2px solid var(--neon-blue);
-            color: var(--neon-blue);
+            padding: 18px 35px;
+            font-size: 1.4em;
+            font-weight: bold;
             text-transform: uppercase;
-            font-size: 1.1em;
-            font-weight: 700;
-            transition: all 0.3s ease-in-out;
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.5);
+            text-decoration: none;
+            color: var(--dark-bg);
+            background: var(--cyber-pink);
+            border: none;
+            border-radius: 3px;
+            box-shadow: var(--neon-glow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            letter-spacing: 1px;
         }
 
         .cta-button:hover {
-            background-color: var(--neon-blue);
+            background: white;
             color: var(--dark-bg);
-            box-shadow: 0 0 25px var(--neon-blue);
+            box-shadow: 0 0 15px var(--cyber-pink), 0 0 50px rgba(255, 0, 153, 0.8);
             transform: scale(1.05);
         }
 
-        /* --- MODULE STYLES (SECTIONS) --- */
-        section {
-            background-color: var(--mid-gray);
-            border: 1px solid var(--neon-pink);
-            padding: 30px;
-            border-radius: 5px;
-            box-shadow: 0 0 15px rgba(255, 0, 255, 0.4);
+        /* Glitch Animation (used for logo) */
+        @keyframes flicker {
+            0% { opacity: 1; text-shadow: var(--neon-glow); }
+            20% { opacity: 0.8; }
+            40% { opacity: 1; text-shadow: var(--neon-glow); }
+            50% { opacity: 0.9; text-shadow: none; }
+            60% { opacity: 1; text-shadow: var(--neon-glow); }
+            80% { opacity: 0.95; }
+            100% { opacity: 1; text-shadow: var(--neon-glow); }
         }
 
-        section h2 {
-            font-size: 2em;
-            color: var(--neon-pink);
-            margin-bottom: 20px;
-            border-bottom: 2px dashed var(--neon-blue);
-            padding-bottom: 10px;
-        }
-
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-        }
-
-        .speaker-card, .schedule-item {
-            background-color: var(--dark-bg);
-            padding: 20px;
-            border: 1px solid var(--neon-blue);
-            box-shadow: 0 0 10px var(--neon-blue);
-            transition: transform 0.3s;
-        }
-
-        .speaker-card:hover, .schedule-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px var(--neon-pink);
-        }
-
-        .speaker-card h3 { color: var(--neon-blue); margin-bottom: 5px; }
-        .speaker-card p { font-size: 0.9em; color: #aaa; }
-        .schedule-item p strong { color: var(--neon-pink); }
-        
-        /* --- FOOTER --- */
-        footer {
-            text-align: center;
-            padding: 20px 5%;
-            border-top: 2px solid var(--neon-blue);
-            margin-top: 50px;
-            background-color: var(--mid-gray);
-            font-size: 0.8em;
-            color: #ccc;
-        }
-
-        footer a {
-            color: var(--neon-pink);
-        }
-        
-        /* --- MEDIA QUERY FOR RESPONSIVENESS --- */
+        /* Responsive Adjustments */
         @media (max-width: 768px) {
-            .glitch-text { font-size: 2.5em; }
-            header { flex-direction: column; }
-            nav { margin-top: 10px; }
-            nav a { margin: 5px 10px; display: inline-block; }
+            .logo {
+                font-size: 3em;
+            }
+            .subtitle {
+                font-size: 1.2em;
+            }
+            .status-text {
+                font-size: 1.5em;
+            }
+            .cta-button {
+                padding: 12px 25px;
+                font-size: 1.1em;
+            }
+            .header {
+                padding: 10px;
+            }
+            .nav-link {
+                margin: 0 10px;
+                font-size: 0.8em;
+            }
         }
-        
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <canvas id="code-rain-canvas"></canvas>
 
-    <header>
-        <div class="logo">BSIDES INDORE // V-1.0</div>
-        <nav>
-            <a href="#about">[ // ABOUT ]</a>
-            <a href="#speakers">[ // SPEAKERS ]</a>
-            <a href="#schedule">[ // SCHEDULE ]</a>
-            <a href="#sponsors">[ // SPONSORS ]</a>
-            <a href="#contact">[ // CONTACT ]</a>
-        </nav>
+    <header class="header">
+        <a href="#speakers" class="nav-link">// SPEAKERS //</a>
+        <a href="#aboutus" class="nav-link">// ABOUT US //</a>
+        <a href="#event" class="nav-link">// EVENT DATA //</a>
     </header>
 
-    <main>
-        <section class="hero-section">
-            <h1 class="glitch-text" data-text="ACCESS DENIED: SECURE YOUR DATA">ACCESS DENIED: SECURE YOUR DATA</h1>
-            <h2 class="hero-date">CYBER-SECURITY SUMMIT 2024 // INDORE, M.P.</h2>
-            <p style="margin-top: 20px; font-size: 1.1em; color: #ccc;">// A Community-Driven Information Security Conference //</p>
-            <a href="#" class="cta-button">>> REGISTER NOW: INITIATE ATTACK SEQUENCE <<</a>
+    <canvas id="particle-canvas"></canvas>
+
+    <div class="landing-container">
+        <div>
+            <div class="logo">Bsides Indore</div>
+            <div class="subtitle">RUNNING PROTOCOL V.2.0: CYBER DEFENSE INITIATED</div>
+        </div>
+
+        <section class="status-block">
+            <div class="date-text">[EXECUTION DATE]</div>
+            <div class="status-text">Q4 2025 // ACCESS REQUIRED</div>
         </section>
 
-        <section id="about">
-            <h2>// 0x01. SYSTEM INFO // ABOUT BSIDES INDORE</h2>
-            <p><strong>B-Sides Indore</strong> is a non-profit, community-driven framework for organizing and holding open, low-cost security conferences. Every B-Sides is a unique event with its own theme, style, and content. It's an opportunity for individuals to present their research, engage with the local community, and discuss the "next big things" in information security.</p>
-            <p style="margin-top: 10px;">**MISSION LOG:** To create a platform for the passionate minds of Central India to connect, share knowledge, and push the boundaries of cyber defense and offense.</p>
-        </section>
-
-        <section id="speakers">
-            <h2>// 0x02. THREAT ACTORS // SPEAKERS LINEUP</h2>
-            <div class="grid-container">
-                <div class="speaker-card">
-                    <h3>[ SYSTEM ]_NEO-01</h3>
-                    <p><strong>Topic:</strong> Quantum Post-Mortem Forensics</p>
-                    <p><em>Security Architect @ Global_NetCorp</em></p>
-                </div>
-                <div class="speaker-card">
-                    <h3>[ EXPLOIT ]_ECHO-R</h3>
-                    <p><strong>Topic:</strong> Next-Gen Supply Chain Attacks on IoT</p>
-                    <p><em>Red Team Lead @ Cyber_Defense_Ops</em></p>
-                </div>
-                <div class="speaker-card">
-                    <h3>[ DEBUG ]_AURA-99</h3>
-                    <p><strong>Topic:</strong> Deconstructing AI-Driven Phishing Campaigns</p>
-                    <p><em>Cyber Educator & Researcher</em></p>
-                </div>
-            </div>
-        </section>
-
-        <section id="schedule">
-            <h2>// 0x03. TIMELOCK // SCHEDULE</h2>
-            <div class="grid-container">
-                <div class="schedule-item">
-                    <p><strong>09:00 - 09:30:</strong> REGISTRATION & NETWORK BOOTUP</p>
-                </div>
-                <div class="schedule-item">
-                    <p><strong>09:30 - 10:00:</strong> KEYNOTE: THE CYBER-WASTELAND</p>
-                </div>
-                <div class="schedule-item">
-                    <p><strong>10:00 - 11:00:</strong> TRACK A: ZERO-DAY DISCOVERY (NEO-01)</p>
-                </div>
-                <div class="schedule-item">
-                    <p><strong>11:00 - 12:00:</strong> TRACK B: ETHICAL HACKING WORKSHOP</p>
-                </div>
-                <div class="schedule-item">
-                    <p><strong>12:00 - 13:00:</strong> LUNCH: RECHARGE CYBER-BATTERIES</p>
-                </div>
-                <div class="schedule-item">
-                    <p><strong>13:00 - 16:00:</strong> CAPTURE THE FLAG (CTF) EVENT</p>
-                </div>
-            </div>
-        </section>
-
-        <section id="sponsors">
-            <h2>// 0x04. ALLIES // SPONSORSHIP ENCRYPTION</h2>
-            <p>Secure our future. Join the network. Your support helps us keep the knowledge free and the community strong. Contact us for our sponsorship packages (SILVER_CHROME, GOLD_PLATED, PLATINUM_NEON).</p>
-            <p style="margin-top: 15px;">**CURRENT SPONSORS:** [CYBER-NET SOLUTIONS], [TECH-MASTERS INDORE], [ANONYMOUS_HACKER_GROUP]</p>
-        </section>
-        
-        <section id="contact">
-            <h2>// 0x05. COMM CHANNEL // CONTACT</h2>
-            <p><strong>EMAIL:</strong> <a href="mailto:contact@bsidesindore.in">COMM_LINK@BSIDESINDORE.IN</a></p>
-            <p><strong>TWITTER:</strong> @BSidesIndore</p>
-            <p><strong>LOCATION:</strong> THE DIGITAL HUB // INDORE CITY</p>
-        </section>
-
-    </main>
-
-    <footer>
-        &copy; 2024 BSides Indore // Design Protocol: CYBERPUNK_V1.0 // <a href="#">PRIVACY_MATRIX</a> | <a href="#">CODE_OF_CONDUCT</a>
-    </footer>
+        <a href="#register" class="cta-button" onclick="alert('REDIRECTING TO REGISTRATION PORTAL...')">
+            >>> DOWNLOAD ACCESS KEY <<<
+        </a>
+    </div>
 
     <script>
-        const canvas = document.getElementById('code-rain-canvas');
+        const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
-        
-        let width = canvas.width = window.innerWidth;
-        let height = canvas.height = window.innerHeight;
-        
-        // Character set for the rain (binary, hex, etc.)
-        const matrix = '0123456789ABCDEF!@#$%^&*/\\+-';
-        const font_size = 10;
-        const columns = width / font_size;
-        
-        // An array of drops for each column
-        let drops = [];
-        for(let x = 0; x < columns; x++) {
-            drops[x] = 1;
+        let particles = [];
+        const numParticles = 100;
+
+        function setCanvasDimensions() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
         }
 
-        function draw() {
-            // Semi-transparent background to create the fading trail effect
-            ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
-            ctx.fillRect(0, 0, width, height);
-            
-            ctx.fillStyle = '#00FFFF'; // Neon Blue color for the characters
-            ctx.font = font_size + 'px ' + 'var(--font-main)';
-            
-            // Looping through drops
-            for(let i = 0; i < drops.length; i++) {
-                // Randomly select a character
-                const text = matrix[Math.floor(Math.random() * matrix.length)];
-                
-                // Draw the character
-                ctx.fillText(text, i * font_size, drops[i] * font_size);
-                
-                // Sending the drop back to the top randomly
-                if(drops[i] * font_size > height && Math.random() > 0.975) {
-                    drops[i] = 0;
+        // Particle Class (Updated to cyberpunk colors)
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.random() * 0.5 - 0.25;
+                this.speedY = Math.random() * 0.5 - 0.25;
+                // Alternate between pink and purple
+                this.color = (Math.random() > 0.5) ? 'rgba(255, 0, 153, 0.7)' : 'rgba(153, 0, 255, 0.7)';
+            }
+
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+
+                // Simple boundary reset
+                if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                     this.x = Math.random() * canvas.width;
+                     this.y = Math.random() * canvas.height;
                 }
-                
-                // Incrementing Y coordinate
-                drops[i]++;
+            }
+
+            draw() {
+                ctx.fillStyle = this.color;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
             }
         }
-        
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            columns = width / font_size;
-            drops = [];
-            for(let x = 0; x < columns; x++) {
-                drops[x] = 1;
-            }
-        });
-        
-        // Loop the animation
-        setInterval(draw, 33); // Approximately 30 FPS
 
+        function initParticles() {
+            setCanvasDimensions();
+            particles = [];
+            for (let i = 0; i < numParticles; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        function animate() {
+            // Clear canvas with a very dark, slightly transparent color for trails
+            ctx.fillStyle = 'rgba(17, 0, 26, 0.2)'; 
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw and update particles
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+
+            // Draw connections between nearby particles (the "network" effect)
+            for (let a = 0; a < particles.length; a++) {
+                for (let b = a; b < particles.length; b++) {
+                    const dx = particles[a].x - particles[b].x;
+                    const dy = particles[a].y - particles[b].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+
+                    if (distance < 120) { // Max distance for connection increased slightly
+                        // Use a mix of pink and purple for the lines
+                        const lineColor = (a % 2 === 0) ? 'rgba(255, 0, 153, ' : 'rgba(153, 0, 255, ';
+                        ctx.strokeStyle = lineColor + `${1 - (distance / 120)})`; 
+                        ctx.lineWidth = 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(particles[a].x, particles[a].y);
+                        ctx.lineTo(particles[b].x, particles[b].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+
+            requestAnimationFrame(animate);
+        }
+
+        window.addEventListener('resize', initParticles);
+        initParticles();
+        animate();
     </script>
 </body>
 </html>
